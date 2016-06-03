@@ -1,53 +1,84 @@
 <!doctype html>
+<html ng-app="App">
 <!-- include !doctype resolved problem of ui-grid header height-->
     <head>
     
      
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
         
-    <link rel="stylesheet" href="uigrid/ui-grid.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/main.css" type="text/css" />           
-    <link rel="stylesheet" href="css/angular-chart.min.css">    
+        <link rel="stylesheet" href="uigrid/ui-grid.min.css" type="text/css" />
+        <link rel="stylesheet" href="css/main.css" type="text/css" />           
+        <link rel="stylesheet" href="css/angular-chart.min.css">    
 
   
     </head>
-    <body ng-app="App">
+    <body ng-controller="Ctrl" >
+    <div class="panel panel-primary">
+        <div class="panel-heading" >
+            <h3 class="panel-title"><b>DataGraph</b> - <i>Tools to import data and generate graph</i></h3>
+        </div>    
         
-    <div  ng-controller="Ctrl">
-        <ng-csv-import content="csv.content"
-        header="csv.header" 
-        separator="csv.separator"
-        result="csv.result"
-        accept="csv.accept"></ng-csv-import>
-        <!--
-        <select ng-model="type">
-        <option value='chart chart-bar'>Bar</option>
-        <option value='chart chart-line'>Line</option>    
-        </select> -->
-        <table><tr><td>Pivot<select ng-model="pivotfield" ng-options="header for header in headers" /></td>
-        <td>Aggregate<select ng-model="aggregatefield" ng-options="header for header in headers" /></td>
-        <td>Aggregate Type<select ng-model="aggregatetype"><option value="sum">Sum</option><option value="count">count</option></select></td>
-        </tr></table>                        
-        <input type="button" value="Load CSV" ng-click="LoadCSV()" />
-        <input type="button" value="Generate" ng-click="Generate()" />
-    
-    
-        
-    <table width="100%">
-    <tr>
-        <td>
-            <div ui-grid="gridOptions" ui-grid-pagination class="grid"></div>    
-        </td>
-        <td>
-            <div>
-                <canvas id="bar" class="chart chart-bar" chart-data="graphdata" chart-labels="labels" chart-series="series">
-                </canvas>
-                
-                
-            </div>
-        </td>    
-    </tr>    
-    </table>
-    </div>    
+        <div class="panel-body">    
+            <ng-csv-import content="csv.content"
+            header="csv.header" 
+            separator="csv.separator"
+            result="csv.result"
+            accept="csv.accept"></ng-csv-import>
+            <br>
+            <!--
+            <select ng-model="type">
+            <option value='chart chart-bar'>Bar</option>
+            <option value='chart chart-line'>Line</option>    
+            </select> -->
+            <table width="90%">
+                <tr align="left">
+                    <td><b>Pivot</b></td><td>&nbsp;</td><td><b>Aggregate</b></td><td>&nbsp;</td><td><b>Aggregate Type</b></td><td>&nbsp;</td><td><b>Graph Type</b></td></tr>
+                <tr align="left"><td><select class="form-control" ng-model="pivotfield" ng-options="header for header in headers" /></td>
+                <td>&nbsp;</td>
+                <td><select class="form-control" ng-model="aggregatefield" ng-options="header for header in headers" /></td>
+                <td>&nbsp;</td>
+                <td><select class="form-control" ng-model="aggregatetype"><option value="sum">Sum</option><option value="count">Count</option></select></td>
+                <td>&nbsp;</td>    
+                <td><select class="form-control" ng-model="type"><option value="Line">Line</option><option value="Bar">Bar</option><option value="Pie">Pie</option><option value="Doughnut">Doughnut</option><option value="Polar Area">Polar Area</option></select></td>
+                </tr></table>     
+            <br>
+            <input type="button" class="btn btn-primary" value="Load CSV" ng-click="LoadCSV()" />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" class="btn btn-primary" value="Generate" ng-click="Generate()" />
+            <br>
+            
+            <div class="row">
+                <div class="result" class="col-xs-3" >
+                    <div class="panel panel-info">
+                        <div class="panel-heading" >                    
+                            <h4 class="panel-title"><b>Result Grid</b></h4>
+                        </div>    
+                        <div class="panel-body"> 
+                    
+                            <div ui-grid="gridOptions" ui-grid-pagination class="grid"></div>    
+                        </div>
+                    </div>
+                </div>    
+                <div class="graph" class="col-xs-3" >
+                    <div class="panel panel-info">
+                        <div class="panel-heading" >                    
+                            <h4 class="panel-title"><b>Graph</b></h4>
+                        </div>    
+                        <div class="panel-body"> 
+                        <canvas id="base" class="chart chart-base" chart-type="type" chart-data="graphdata" chart-labels="labels" chart-series="series">
+                            </canvas>                                
+                        </div>    
+                    </div>    
+                </div>
+            </div>    
+        </div>    
+    </div>       
     <script src="js/alasql.js"></script>     
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script>     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script> 
@@ -60,7 +91,9 @@
    
     <script src="js/angular-chart.min.js"></script>
     <script src="js/angular-csv-import.min.js"></script>
-    <script src="js/app.js"></script>      
+    <script src="js/app.js"></script>     
+        
     </body>
     
+
 </html>

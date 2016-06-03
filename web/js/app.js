@@ -1,15 +1,22 @@
 var app = angular.module("App", ['ngCsvImport','ngAnimate', 'ngTouch', 'ui.grid', 'ui.grid.importer','chart.js']);
 
+app.config(function (ChartJsProvider) {
+    // Configure all charts
+    ChartJsProvider.setOptions({      
+      responsive: true
+    });
+});
+
 app.controller("Ctrl", ['$scope','$log', '$http', '$interval', function ($scope, $log, $http, $interval){
     
     $scope.labels = [];
-    $scope.type = 'StackedBar';    
+    $scope.type = 'Line';    
     $scope.graphdata = [];
     
     //Input Parameters for Graph
-    $scope.pivotfield = "";
-    $scope.aggregatefield = "";
-    $scope.aggregatetype = "";
+    $scope.pivotfield = "Please Select";
+    $scope.aggregatefield = "Please Select";
+    $scope.aggregatetype = "count";
     
     //List of Values generated from alasql
     $scope.headers = [];
