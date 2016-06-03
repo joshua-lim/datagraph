@@ -7,12 +7,12 @@ app.config(function (ChartJsProvider) {
     });
 });
 
-app.controller("Ctrl", ['$scope','$log', '$http', '$interval', function ($scope, $log, $http, $interval){
+app.controller("Ctrl", ['$scope','$log', '$http', '$interval','$timeout', function ($scope, $log, $http, $interval,$timeout){
     
     $scope.labels = [];
     $scope.type = 'Line';    
     $scope.graphdata = [];
-    
+    $scope.progresspic="img/blank.gif";
     //Input Parameters for Graph
     $scope.pivotfield = "Please Select";
     $scope.aggregatefield = "Please Select";
@@ -48,22 +48,21 @@ app.controller("Ctrl", ['$scope','$log', '$http', '$interval', function ($scope,
     
     $scope.LoadCSV = function () {
     
-        $scope.headers = [];
-        
+        $scope.headers = [];        
+        console.log($scope.progresspic);        
         var p = $scope.csv.result[0];
         for (var key in p) {           
             $scope.headers.push(key);
         }
         
-        $scope.griddata = $scope.csv.result;                  
+        $scope.griddata = $scope.csv.result;      
     };
     
     $scope.Generate = function () {
                     
         $scope.labels = [];
         $scope.graphdata = [];
-                
-        var res = alasql('SELECT '+$scope.pivotfield+', '+$scope.aggregatetype+'('+$scope.aggregatefield+') As '+$scope.aggregatefield+' FROM ? GROUP BY '+$scope.pivotfield,[$scope.csv.result]);
+        var res = alasql('SELECT '+$scope.pivotfield+', '+$scope.aggregatetype+'(DISTINCT '+$scope.aggregatefield+') As '+$scope.aggregatefield+' FROM ? GROUP BY '+$scope.pivotfield,[$scope.csv.result]);
         
         
         tempdata = [];
@@ -78,3 +77,7 @@ app.controller("Ctrl", ['$scope','$log', '$http', '$interval', function ($scope,
     
 
 }]); 
+
+function callAtTimeout() {
+    console.log("Timeout occurred");
+}
