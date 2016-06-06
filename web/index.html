@@ -21,7 +21,7 @@
     <body ng-controller="Ctrl" >
     <div class="panel panel-primary">
         <div class="panel-heading" >
-            <h3 class="panel-title"><b>DataGraph</b> - <i>Tools to import data and generate graph</i></h3>
+            <h3 class="panel-title"><b>DataGraph</b> - <i>Tool to import data and generate graph</i></h3>
         </div>    
         
         <div class="panel-body">    
@@ -30,7 +30,7 @@
             separator="csv.separator"
             result="csv.result"
             accept="csv.accept"></ng-csv-import>
-            <br>
+
             <!--
             <select ng-model="type">
             <option value='chart chart-bar'>Bar</option>
@@ -51,7 +51,7 @@
             <input type="button" class="btn btn-primary" value="Load CSV" ng-click="LoadCSV()" />
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <input type="button" class="btn btn-primary" value="Generate" ng-click="Generate()" />
-            <br>
+            
             <div><img ng-src="{{progresspic}}" /></div>
             <div class="row">
                 <div class="result" class="col-xs-3" >
@@ -71,7 +71,7 @@
                             <h4 class="panel-title"><b>Graph</b></h4>
                         </div>    
                         <div class="panel-body"> 
-                        <canvas id="base" class="chart chart-base" chart-type="type" chart-data="graphdata" chart-labels="labels" chart-series="series">
+                        <canvas id="base" class="chart chart-base" chart-type="type"  chart-data="graphdata" chart-labels="labels" chart-series="series">
                             </canvas>                                
                         </div>    
                     </div>    

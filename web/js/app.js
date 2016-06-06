@@ -1,4 +1,4 @@
-var app = angular.module("App", ['ngCsvImport','ngAnimate', 'ngTouch', 'ui.grid', 'ui.grid.importer','chart.js']);
+var app = angular.module("App", ['ngCsvImport','ngAnimate', 'ngTouch', 'ui.grid','ui.grid.pagination', 'ui.grid.importer','chart.js']);
 
 app.config(function (ChartJsProvider) {
     // Configure all charts
@@ -36,11 +36,11 @@ app.controller("Ctrl", ['$scope','$log', '$http', '$interval','$timeout', functi
     $scope.griddata = [];
          
     $scope.gridOptions = {
-        enableGridMenu: true,
+        enableGridMenu: true,        
         enableFiltering: true,
         data: 'griddata',
-        paginationPageSizes: [25, 50, 75],
-        paginationPageSize: 25,        
+        paginationPageSizes: [50, 100, 200],
+        paginationPageSize: 50,        
         onRegisterApi: function(gridApi){
         $scope.gridApi = gridApi;
         }
