@@ -18,69 +18,26 @@
 
   
     </head>
-    <body ng-controller="Ctrl" >
+    <body>        
     <div class="panel panel-primary">
         <div class="panel-heading" >
             <h3 class="panel-title"><b>DataGraph</b> - <i>Tool to import data and generate graph</i></h3>
         </div>    
         
         <div class="panel-body">    
-            <ng-csv-import content="csv.content"
-            header="csv.header" 
-            separator="csv.separator"
-            result="csv.result"
-            accept="csv.accept"></ng-csv-import>
-
-            <!--
-            <select ng-model="type">
-            <option value='chart chart-bar'>Bar</option>
-            <option value='chart chart-line'>Line</option>    
-            </select> -->
-            <table width="90%">
-                <tr align="left">
-                    <td><b>Pivot</b></td><td>&nbsp;</td><td><b>Aggregate</b></td><td>&nbsp;</td><td><b>Aggregate Type</b></td><td>&nbsp;</td><td><b>Graph Type</b></td></tr>
-                <tr align="left"><td><select class="form-control" ng-model="pivotfield" ng-options="header for header in headers" /></td>
-                <td>&nbsp;</td>
-                <td><select class="form-control" ng-model="aggregatefield" ng-options="header for header in headers" /></td>
-                <td>&nbsp;</td>
-                <td><select class="form-control" ng-model="aggregatetype"><option value="sum">Sum</option><option value="count">Count</option></select></td>
-                <td>&nbsp;</td>    
-                <td><select class="form-control" ng-model="type"><option value="Line">Line</option><option value="Bar">Bar</option><option value="Pie">Pie</option><option value="Doughnut">Doughnut</option><option value="Polar Area">Polar Area</option></select></td>
-                </tr></table>     
-            <br>
-            <input type="button" class="btn btn-primary" value="Load CSV" ng-click="LoadCSV()" />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="button" class="btn btn-primary" value="Generate" ng-click="Generate()" />
-            
-            <div><img ng-src="{{progresspic}}" /></div>
-            <div class="row">
-                <div class="result" class="col-xs-3" >
-                    <div class="panel panel-info">
-                        <div class="panel-heading" >                    
-                            <h4 class="panel-title"><b>Result Grid</b></h4>
-                        </div>    
-                        <div class="panel-body"> 
-                    
-                            <div ui-grid="gridOptions" ui-grid-pagination class="grid"></div>    
-                        </div>
-                    </div>
-                </div>    
-                <div class="graph" class="col-xs-3" >
-                    <div class="panel panel-info">
-                        <div class="panel-heading" >                    
-                            <h4 class="panel-title"><b>Graph</b></h4>
-                        </div>    
-                        <div class="panel-body"> 
-                        <canvas id="base" class="chart chart-base" chart-type="type"  chart-data="graphdata" chart-labels="labels" chart-series="series">
-                            </canvas>                                
-                        </div>    
-                    </div>    
-                </div>
-            </div>    
+        <div ng-controller="MenuController" >
+            <ul class="nav nav-tabs">
+                <li role="presentation" ng-class="{active:TabPosition(1)}"><a href ng-click="SetTab(1)">Home</a></li>
+                <li role="presentation" ng-class="{active:TabPosition(2)}"><a href ng-click="SetTab(2)">Field Computation</a></li>
+            </ul>
+        </div>    
+        <div ng-view id="views"></div>    
+  
         </div>    
     </div>       
     <script src="js/alasql.js"></script>     
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script>     
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script>    
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-route.min.js"></script>        
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script> 
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-touch.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-animate.js"></script>   

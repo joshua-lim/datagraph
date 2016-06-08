@@ -1,4 +1,20 @@
-var app = angular.module("App", ['ngCsvImport','ngAnimate', 'ngTouch', 'ui.grid','ui.grid.pagination', 'ui.grid.importer','chart.js']);
+var app = angular.module("App", ['ngRoute','ngCsvImport','ngAnimate', 'ngTouch', 'ui.grid','ui.grid.pagination', 'ui.grid.importer','chart.js']);
+
+
+
+app.config(function ($routeProvider) {
+    $routeProvider
+        .when('/',
+        {
+            templateUrl: 'view/import.html',
+            controller: 'ImportController'
+        }).
+        when('/fieldcomputation',
+        {
+            templateUrl: 'view/fieldcomputation.html',
+            controller: 'FieldComputationController'
+        });
+});
 
 app.config(function (ChartJsProvider) {
     // Configure all charts
@@ -7,7 +23,52 @@ app.config(function (ChartJsProvider) {
     });
 });
 
-app.controller("Ctrl", ['$scope','$log', '$http', '$interval','$timeout', function ($scope, $log, $http, $interval,$timeout){
+
+app.service('SharedDataService',function(){
+
+    var dataList = [];
+    var fieldList = [];
+    
+    return {
+        getDataList : function(){
+      console.log("call getDataList");            
+      return dataList; 
+    },
+        setDataList : function(data){
+         dataList = data;
+    },
+        getFieldList : function(){
+      console.log("call getFieldList");            
+      return fieldList; 
+    },
+        setFieldList : function(data){
+         fieldList = data;
+    }        
+    };
+    
+});
+
+app.controller("MenuController", ["$scope","$location", function($scope,$location) {
+    
+    $scope.tab = 1;
+    
+    $scope.SetTab = function (tabId) {
+        $scope.tab = tabId;
+        console.log(tabId);
+        if (tabId ==1){
+            $location.path("/");
+        }else if (tabId ==2){
+            $location.path("fieldcomputation");
+        }
+    };
+    
+    $scope.TabPosition = function (tabId) {        
+        return $scope.tab === tabId;
+    };
+
+}]);
+
+app.controller("ImportController", ['$scope','$log', '$http', '$interval','$timeout',"SharedDataService", function ($scope, $log, $http, $interval,$timeout,SharedDataService){
     
     $scope.labels = [];
     $scope.type = 'Line';    
@@ -18,8 +79,6 @@ app.controller("Ctrl", ['$scope','$log', '$http', '$interval','$timeout', functi
     $scope.aggregatefield = "Please Select";
     $scope.aggregatetype = "count";
     
-    //List of Values generated from alasql
-    $scope.headers = [];
     
     $scope.csv = {
     	content: null,
@@ -33,7 +92,7 @@ app.controller("Ctrl", ['$scope','$log', '$http', '$interval','$timeout', functi
     };
     
     
-    $scope.griddata = [];
+
          
     $scope.gridOptions = {
         enableGridMenu: true,        
@@ -45,6 +104,10 @@ app.controller("Ctrl", ['$scope','$log', '$http', '$interval','$timeout', functi
         $scope.gridApi = gridApi;
         }
     };
+  
+    
+    $scope.griddata = SharedDataService.getDataList();
+    $scope.headers = SharedDataService.getFieldList();        
     
     $scope.LoadCSV = function () {
     
@@ -55,16 +118,24 @@ app.controller("Ctrl", ['$scope','$log', '$http', '$interval','$timeout', functi
             $scope.headers.push(key);
         }
         
-        $scope.griddata = $scope.csv.result;      
+        $scope.griddata = $scope.csv.result;  
+        
+        SharedDataService.setDataList($scope.griddata);
+        SharedDataService.setFieldList($scope.headers);
     };
     
     $scope.Generate = function () {
                     
         $scope.labels = [];
         $scope.graphdata = [];
-        var res = alasql('SELECT '+$scope.pivotfield+', '+$scope.aggregatetype+'(DISTINCT '+$scope.aggregatefield+') As '+$scope.aggregatefield+' FROM ? GROUP BY '+$scope.pivotfield,[$scope.csv.result]);
-        
-        
+        if ($scope.aggregatetype == "SUM"){
+            var sqlquery = 'SELECT '+$scope.pivotfield+', '+$scope.aggregatetype+'('+$scope.aggregatefield+'::NUMBER) As SUMMARY FROM ? GROUP BY '+$scope.pivotfield;    
+        }else{
+            var sqlquery = 'SELECT '+$scope.pivotfield+', '+$scope.aggregatetype+'(DISTINCT '+$scope.aggregatefield+') As '+$scope.aggregatefield+' FROM ? GROUP BY '+$scope.pivotfield;
+        }    
+
+        var res = alasql(sqlquery,[$scope.griddata]);
+                
         tempdata = [];
         for (i = 0; i < res.length; i++) { 
             var temp = res[i];
@@ -78,6 +149,30 @@ app.controller("Ctrl", ['$scope','$log', '$http', '$interval','$timeout', functi
 
 }]); 
 
-function callAtTimeout() {
-    console.log("Timeout occurred");
-}
+app.controller("FieldComputationController", ["$scope","SharedDataService", function($scope,SharedDataService) {
+    
+    $scope.griddata = SharedDataService.getDataList();
+    $scope.headers = SharedDataService.getFieldList();    
+    $scope.average = 0;
+    $scope.sum = 0;
+    $scope.count = 0;
+    $scope.min = 0;
+    $scope.max = 0;
+    console.log($scope.griddata);
+    
+   $scope.Compute = function () {
+        
+       var sqlquery = 'SELECT AVG('+$scope.aggregatefield+'::NUMBER) As AVERAGE,COUNT('+$scope.aggregatefield+'::NUMBER) As COUNTING, SUM('+$scope.aggregatefield+'::NUMBER) As SUMMATION,MIN('+$scope.aggregatefield+'::NUMBER) As MIN_VALUE, MAX('+$scope.aggregatefield+'::NUMBER) As MAX_VALUE FROM ? ';   
+       
+        console.log(sqlquery);       
+        var res = alasql(sqlquery,[$scope.griddata]);
+        $scope.average=res[0].AVERAGE;
+        $scope.sum=res[0].SUMMATION;
+        $scope.count=res[0].COUNTING;
+        $scope.min=res[0].MIN_VALUE;
+        $scope.max=res[0].MAX_VALUE;
+        
+    };    
+
+}]);
+

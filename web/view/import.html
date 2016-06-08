@@ -1,0 +1,52 @@
+            <ng-csv-import content="csv.content"
+            header="csv.header" 
+            separator="csv.separator"
+            result="csv.result"
+            accept="csv.accept"></ng-csv-import>
+
+            <!--
+            <select ng-model="type">
+            <option value='chart chart-bar'>Bar</option>
+            <option value='chart chart-line'>Line</option>    
+            </select> -->
+            <table width="90%">
+                <tr align="left">
+                    <td><b>Pivot</b></td><td>&nbsp;</td><td><b>Aggregate</b></td><td>&nbsp;</td><td><b>Aggregate Type</b></td><td>&nbsp;</td><td><b>Graph Type</b></td></tr>
+                <tr align="left"><td><select class="form-control" ng-model="pivotfield" ng-options="header for header in headers" /></td>
+                <td>&nbsp;</td>
+                <td><select class="form-control" ng-model="aggregatefield" ng-options="header for header in headers" /></td>
+                <td>&nbsp;</td>
+                <td><select class="form-control" ng-model="aggregatetype"><option value="SUM">Sum</option><option value="count">Count</option></select></td>
+                <td>&nbsp;</td>    
+                <td><select class="form-control" ng-model="type"><option value="Line">Line</option><option value="Bar">Bar</option><option value="Pie">Pie</option><option value="Doughnut">Doughnut</option><option value="Polar Area">Polar Area</option></select></td>
+                </tr></table>     
+            <br>
+            <input type="button" class="btn btn-primary" value="Load CSV" ng-click="LoadCSV()" />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" class="btn btn-primary" value="Generate" ng-click="Generate()" />
+            
+            <div><img ng-src="{{progresspic}}" /></div>
+            <div class="row">
+                <div class="result" class="col-xs-3" >
+                    <div class="panel panel-info">
+                        <div class="panel-heading" >                    
+                            <h4 class="panel-title"><b>Result Grid</b></h4>
+                        </div>    
+                        <div class="panel-body"> 
+                    
+                            <div ui-grid="gridOptions" ui-grid-pagination class="grid"></div>    
+                        </div>
+                    </div>
+                </div>    
+                <div class="graph" class="col-xs-3" >
+                    <div class="panel panel-info">
+                        <div class="panel-heading" >                    
+                            <h4 class="panel-title"><b>Graph</b></h4>
+                        </div>    
+                        <div class="panel-body"> 
+                        <canvas id="base" class="chart chart-base" chart-type="type"  chart-data="graphdata" chart-labels="labels" chart-series="series">
+                            </canvas>                                
+                        </div>    
+                    </div>    
+                </div>
+            </div>  

@@ -6,7 +6,7 @@
 }
 .result {
   width: 600px;
-  height: 500px;
+  height: 480px;
   padding-top: 10px;
   padding-right: 30px;
   padding-bottom: 30px;
@@ -15,7 +15,7 @@
 }
 .grid {
   width: 500px;
-  height: 350px;
+  height: 320px;
 }
 .grid .ui-grid-header-cell {
   height: 40px;
@@ -24,7 +24,7 @@
 .graph {  
   vertical-align: top;    
   width: 700px;    
-  height: 600px;
+  height: 480px;
   padding-top: 10px;
   padding-right: 30px;
   padding-bottom: 30px;

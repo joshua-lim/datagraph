@@ -1,0 +1,25 @@
+
+    <table width="90%">
+        <tr align="left">
+            <td><b>Field Computation</b></td><td>&nbsp;</td></tr>
+            <tr align="left">
+            <td><select class="form-control" ng-model="aggregatefield" ng-options="header for header in headers" /></td>
+            <td>&nbsp;</td> 
+            </tr></table>     
+        <br>
+
+        <input type="button" class="btn btn-primary" value="Compute" ng-click="Compute()" />
+  <!-- Table -->
+  <table class="table">
+    <thead>
+        <tr><td>Computation</td><td>Value</td></tr>
+    </thead>
+    <tbody>
+        <tr><td>Average</td><td>{{average | number:2}}</td></tr>
+        <tr><td>Count</td><td>{{count | number:0}}</td></tr>
+        <tr><td>Maximum</td><td>{{max | number}}</td></tr>        
+        <tr><td>Minimum</td><td>{{min | number}}</td></tr>        
+        <tr><td>Sum</td><td>{{sum | number:2}}</td></tr>        
+    </tbody>  
+  </table>
+</div>
