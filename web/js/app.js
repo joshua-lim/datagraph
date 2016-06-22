@@ -77,7 +77,10 @@ app.controller("ImportController", ['$scope','$log', '$http', '$interval','$time
     $scope.pivotfield = "";
     $scope.aggregatefield = "";
     $scope.aggregatetype = "count";
-    
+    $scope.filterfield1 = "";
+    $scope.filtercriteria1 = "";  
+    $scope.filterfield2 = "";
+    $scope.filtercriteria2 = "";   
     
     $scope.csv = {
     	content: null,
@@ -146,14 +149,11 @@ app.controller("ImportController", ['$scope','$log', '$http', '$interval','$time
             sqlquery = sqlquery + ' WHERE ['+$scope.filterfield1 + '] '+CriteriaSign+'"'+$scope.filtercriteria1+'"';
         }
         
-        
-        var n= $scope.filtercriteria2.search("%");
-        if (n != -1){
-           CriteriaSign = "like "
-        }  
-        
-        if ($scope.filterfield2 != ""){
-            
+         if ($scope.filterfield2 != ""){
+            var n= $scope.filtercriteria2.search("%");
+            if (n != -1){
+                CriteriaSign = "like "
+            }                               
             sqlquery = sqlquery + ' AND ['+$scope.filterfield2 + '] '+CriteriaSign+'"'+$scope.filtercriteria2+'"';
         }        
         
