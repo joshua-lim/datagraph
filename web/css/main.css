@@ -5,8 +5,9 @@
     padding-left: 30px;
 }
 .result {
+  <!--- 
   width: 600px;
-  height: 480px;
+  height: 480px; -->
   padding-top: 10px;
   padding-right: 30px;
   padding-bottom: 30px;

@@ -1,11 +1,25 @@
 
     <table width="90%">
         <tr align="left">
-            <td><b>Field Computation</b></td><td>&nbsp;</td></tr>
+            <td><b>Filter Field</b></td><td>&nbsp;</td><td><b>Filter Criteria</b></td><td>&nbsp;</td><td><b>Field Computation</b></td><td>&nbsp;</td></tr>
             <tr align="left">
+            <td><select class="form-control" ng-model="filterfield1" ng-options="header for header in headers" /></td>
+            <td>&nbsp;</td>     
+            <td><input type="text" class="form-control" ng-model="filtercriteria1" /></td>
+            <td>&nbsp;</td>                     
             <td><select class="form-control" ng-model="aggregatefield" ng-options="header for header in headers" /></td>
             <td>&nbsp;</td> 
-            </tr></table>     
+            </tr>
+            <tr align="left">
+            <td><select class="form-control" ng-model="filterfield2" ng-options="header for header in headers" /></td>
+            <td>&nbsp;</td>     
+            <td><input type="text" class="form-control" ng-model="filtercriteria2" /></td>
+            <td>&nbsp;</td>                     
+            <td>&nbsp;</td>
+            <td>&nbsp;</td> 
+            </tr>
+            
+        </table>     
         <br>
 
         <input type="button" class="btn btn-primary" value="Compute" ng-click="Compute()" />
